@@ -4,7 +4,6 @@ import { getVideo, updateVideo } from '../db/videos'
 import type { ApiConfig } from '../config'
 import type { BunRequest } from 'bun'
 import { BadRequestError, NotFoundError, UserForbiddenError } from './errors'
-import path from 'path'
 import { getAssetDiskPath, getAssetURL, mediaTypeToExt } from './assets'
 
 export async function handlerUploadThumbnail(cfg: ApiConfig, req: BunRequest) {
@@ -38,8 +37,8 @@ export async function handlerUploadThumbnail(cfg: ApiConfig, req: BunRequest) {
   }
 
   const mediaType = file.type
-  if (!mediaType) {
-    throw new BadRequestError('Missing Content-Type for thumbnail')
+  if (mediaType !== 'image/jpeg' && mediaType !== 'image/png') {
+    throw new BadRequestError('Invalid file type. Only JPEG or PNG allowed')
   }
 
   const ext = mediaTypeToExt(mediaType)
