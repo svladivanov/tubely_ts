@@ -3,6 +3,13 @@
   "module": "/src/index.ts",
   "type": "module",
   "private": true,
+  "prettier": {
+    "bracketSpacing": true,
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 80,
+    "trailingComma": "es5"
+  },
   "devDependencies": {
     "@types/bun": "^1.2.7",
     "@types/jsonwebtoken": "^9.0.9"
