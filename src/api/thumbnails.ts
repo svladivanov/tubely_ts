@@ -5,6 +5,7 @@ import type { ApiConfig } from '../config'
 import type { BunRequest } from 'bun'
 import { BadRequestError, NotFoundError, UserForbiddenError } from './errors'
 import { getAssetDiskPath, getAssetURL, mediaTypeToExt } from './assets'
+import { randomBytes } from 'crypto'
 
 export async function handlerUploadThumbnail(cfg: ApiConfig, req: BunRequest) {
   const { videoId } = req.params as { videoId?: string }
@@ -42,7 +43,8 @@ export async function handlerUploadThumbnail(cfg: ApiConfig, req: BunRequest) {
   }
 
   const ext = mediaTypeToExt(mediaType)
-  const filename = `${videoId}${ext}`
+  const random = randomBytes(32).toBase64({ alphabet: 'base64url' })
+  const filename = `${random}${ext}`
 
   const assetDiskPath = getAssetDiskPath(cfg, filename)
   await Bun.write(assetDiskPath, file)
